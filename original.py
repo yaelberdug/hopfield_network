@@ -3,7 +3,7 @@
 # Measure average error.
 
 # https://github.com/ctawong/hopfield
-# cmd line: -t 1.PNG 2.PNG 3.PNG 4.PNG 5.PNG 6.PNG  -p pre.png -s 32 --noise-prob 0.06 --n-repeats 1000 --max-n-store 10
+# cmd line: -p pre.png -s 32 --noise-prob 0.06 --n-repeats 1000 --max-n-store 10
 
 from models import Hopfield, OriginalHopfield, ModernHopfield, addNoise
 import numpy as np
@@ -27,7 +27,7 @@ def convert_image_to_32(path, image_name):
 
 def getOptions():
     parser = argparse.ArgumentParser(description='Parses Command.')
-    parser.add_argument('-t', '--train', nargs='*', help='Training data directories.')
+    # parser.add_argument('-t', '--train', nargs='*', help='Training data directories.')
     parser.add_argument('-p', '--predict', nargs='*', help='Predict image.')
     parser.add_argument('-s', '--size', type=int, help='Image size nXn.')
     parser.add_argument('--n-repeats', type=int, default=10, help='Number of repeats for each number of memory runs')
@@ -58,6 +58,7 @@ if __name__ == '__main__':
 
 opt = getOptions()  #parser.parse_args()
 print(opt)
+patterns = ['1.PNG',  '2.PNG',  '3.PNG',  '4.PNG',  '5.PNG',  '6.PNG' ]
 new_images = ['1_new_32b', '2_new_32b', '1_32b']   # ['1_32b', '2_32b']
 
 N = opt.size  # opt.N
@@ -73,10 +74,10 @@ min_diff = []
 query_store = []
 X_store = []
 
-for r in opt.train:   #(n_repeats):
+for r in patterns:  # opt.train:   #(n_repeats):
     #X_store = np.random.choice([-1, 1], size=[n_store, N])
     print('Start training ', r, '...')
-    img = plt.imread(r)
+    img = plt.imread(fr'patterns\{r}')
     img = np.mean(img, axis=2)
     if img.shape != (opt.size, opt.size):
         print('Error: image shape ', img.shape, ' is not (', opt.size, ',', opt.size, ')')
